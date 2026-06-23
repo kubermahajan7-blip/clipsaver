@@ -1,0 +1,51 @@
+{
+  "name": "clipsaver",
+  "version": "1.0.0",
+  "description": "A lightweight, cross-platform clipboard history manager for Mac and Windows. Auto-saves everything you copy, lets you pin favorites, and stores everything locally on your machine.",
+  "main": "src/main.js",
+  "license": "MIT",
+  "author": "Kuber Mahajan",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/YOUR_USERNAME/clipsaver.git"
+  },
+  "keywords": [
+    "clipboard",
+    "clipboard-manager",
+    "clipboard-history",
+    "electron",
+    "productivity",
+    "utility"
+  ],
+  "scripts": {
+    "start": "electron .",
+    "dist:mac": "electron-builder --mac",
+    "dist:win": "electron-builder --win",
+    "dist:all": "electron-builder --mac --win"
+  },
+  "build": {
+    "appId": "com.clipsaver.app",
+    "productName": "ClipSaver",
+    "files": [
+      "src/**/*",
+      "assets/**/*",
+      "package.json"
+    ],
+    "mac": {
+      "category": "public.app-category.utilities",
+      "target": "dmg",
+      "icon": "assets/icon.png"
+    },
+    "win": {
+      "target": "nsis",
+      "icon": "assets/icon.ico"
+    },
+    "directories": {
+      "output": "dist"
+    }
+  },
+  "devDependencies": {
+    "electron": "^31.0.0",
+    "electron-builder": "^24.13.3"
+  }
+}

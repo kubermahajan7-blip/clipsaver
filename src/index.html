@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>ClipSaver</title>
+<style>
+  :root {
+    --ink: #1c1b1a;
+    --paper: #f6f4ef;
+    --line: #e1ddd3;
+    --muted: #8c8678;
+    --accent: #b5562b;
+    --accent-soft: #f1e3da;
+    --pin-bg: #fbf6e8;
+    --pin-line: #e6d8a8;
+    --danger: #a23b3b;
+    --mono: "SF Mono", "Cascadia Code", "Consolas", ui-monospace, Menlo, monospace;
+    --sans: -apple-system, "Segoe UI", system-ui, sans-serif;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    height: 100%;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--sans);
+    -webkit-font-smoothing: antialiased;
+    user-select: none;
+  }
+
+  #app {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+  }
+
+  header {
+    padding: 14px 16px 10px;
+    border-bottom: 1px solid var(--line);
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    flex-shrink: 0;
+  }
+
+  .brand {
+    font-family: var(--mono);
+    font-size: 13px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink);
+  }
+
+  .brand span { color: var(--accent); }
+
+  .count {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--muted);
+  }
+
+  .toolbar {
+    display: flex;
+    gap: 8px;
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--line);
+    flex-shrink: 0;
+  }
+
+  input[type="search"] {
+    flex: 1;
+    border: 1px solid var(--line);
+    background: #fff;
+    border-radius: 6px;
+    padding: 7px 10px;
+    font-size: 13px;
+    font-family: var(--sans);
+    color: var(--ink);
+    outline: none;
+  }
+  input[type="search"]:focus { border-color: var(--accent); }
+
+  button.ghost {
+    border: 1px solid var(--line);
+    background: transparent;
+    color: var(--muted);
+    font-size: 12px;
+    padding: 7px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-family: var(--sans);
+  }
+  button.ghost:hover { border-color: var(--danger); color: var(--danger); }
+
+  main {
+    flex: 1;
+    overflow-y: auto;
+    padding: 6px 0;
+  }
+
+  .section-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 10px 16px 4px;
+  }
+
+  .item {
+    margin: 6px 12px;
+    padding: 10px 12px;
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    cursor: pointer;
+    position: relative;
+    transition: border-color 0.15s ease, transform 0.1s ease;
+  }
+  .item:hover { border-color: var(--accent); }
+  .item:active { transform: scale(0.99); }
+
+  .item.pinned {
+    background: var(--pin-bg);
+    border-color: var(--pin-line);
+  }
+
+  .item.fresh {
+    animation: pulse 0.9s ease-out;
+  }
+  @keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(181, 86, 43, 0.35); }
+    100% { box-shadow: 0 0 0 8px rgba(181, 86, 43, 0); }
+  }
+
+  .item-text {
+    font-family: var(--mono);
+    font-size: 12.5px;
+    line-height: 1.5;
+    color: var(--ink);
+    white-space: pre-wrap;
+    word-break: break-word;
+    max-height: 4.5em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+  }
+
+  .item-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 6px;
+  }
+
+  .item-time {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--muted);
+  }
+
+  .item-actions {
+    display: flex;
+    gap: 6px;
+    opacity: 0;
+    transition: opacity 0.12s ease;
+  }
+  .item:hover .item-actions { opacity: 1; }
+
+  .icon-btn {
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    font-size: 13px;
+    padding: 2px 5px;
+    border-radius: 4px;
+    color: var(--muted);
+    line-height: 1;
+  }
+  .icon-btn:hover { background: var(--accent-soft); color: var(--accent); }
+  .icon-btn.pin-active { color: #b8923a; opacity: 1; }
+
+  .empty {
+    text-align: center;
+    padding: 60px 24px;
+    color: var(--muted);
+    font-size: 13px;
+  }
+  .empty .big {
+    font-family: var(--mono);
+    font-size: 28px;
+    color: var(--line);
+    margin-bottom: 8px;
+  }
+
+  footer {
+    padding: 8px 16px;
+    border-top: 1px solid var(--line);
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--muted);
+    text-align: center;
+    flex-shrink: 0;
+  }
+
+  ::-webkit-scrollbar { width: 8px; }
+  ::-webkit-scrollbar-thumb { background: var(--line); border-radius: 4px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+
+  .toast {
+    position: fixed;
+    bottom: 38px;
+    left: 50%;
+    transform: translateX(-50%) translateY(10px);
+    background: var(--ink);
+    color: var(--paper);
+    font-family: var(--mono);
+    font-size: 11px;
+    padding: 6px 12px;
+    border-radius: 6px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.15s ease, transform 0.15s ease;
+  }
+  .toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+</style>
+</head>
+<body>
+  <div id="app">
+    <header>
+      <div class="brand">Clip<span>Saver</span></div>
+      <div class="count" id="count">0 items</div>
+    </header>
+
+    <div class="toolbar">
+      <input type="search" id="search" placeholder="Search clipboard history…" />
+      <button class="ghost" id="clearBtn" title="Clear unpinned items">Clear</button>
+    </div>
+
+    <main id="list"></main>
+
+    <footer>⌃⇧V to toggle window · Pinned items are never auto-cleared</footer>
+  </div>
+  <div class="toast" id="toast">Copied</div>
+
+  <script src="renderer.js"></script>
+</body>
+</html>

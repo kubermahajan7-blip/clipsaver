@@ -1,0 +1,20 @@
+<svg width="256" height="256" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background: rounded square, cream paper tone -->
+  <rect x="0" y="0" width="256" height="256" rx="44" fill="#f6f4ef"/>
+  <rect x="4" y="4" width="248" height="248" rx="40" fill="none" stroke="#e1ddd3" stroke-width="4"/>
+
+  <!-- Clipboard body -->
+  <rect x="62" y="48" width="132" height="168" rx="14" fill="#ffffff" stroke="#1c1b1a" stroke-width="7"/>
+
+  <!-- Clipboard clip at top -->
+  <rect x="98" y="34" width="60" height="28" rx="8" fill="#b5562b" stroke="#1c1b1a" stroke-width="6"/>
+
+  <!-- Lines representing saved text/clips -->
+  <rect x="82" y="92" width="92" height="10" rx="5" fill="#1c1b1a"/>
+  <rect x="82" y="116" width="92" height="10" rx="5" fill="#1c1b1a"/>
+  <rect x="82" y="140" width="60" height="10" rx="5" fill="#1c1b1a"/>
+
+  <!-- Pinned star accent, bottom right, on the terracotta accent -->
+  <circle cx="166" cy="178" r="26" fill="#b5562b"/>
+  <path d="M166 162 L171.8 174.2 L185 175.8 L175.5 184.8 L178 198 L166 191.2 L154 198 L156.5 184.8 L147 175.8 L160.2 174.2 Z" fill="#f6f4ef"/>
+</svg>
