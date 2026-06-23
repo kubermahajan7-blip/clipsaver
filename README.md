@@ -28,7 +28,7 @@ Check the [Releases](../../releases) page for prebuilt installers (`.exe` for Wi
 **Requirements:** [Node.js](https://nodejs.org) v18 or newer.
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/clipsaver.git
+git clone https://github.com/kubermahajan7-blip/clipsaver.git
 cd clipsaver
 npm install
 ```
